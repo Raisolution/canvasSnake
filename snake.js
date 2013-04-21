@@ -93,6 +93,28 @@ var gameOver = false;
 			return true;
 		}
 
+		function generateNewApple(){
+			var isInSnake = false;
+
+			while(true){
+				apple.x = getRandomInt(0, (canvas.width / snakeWidth) - 1);
+				apple.y = getRandomInt(0, (canvas.height / snakeWidth) - 1);
+
+				for (var i = 1; i < snake.body.length; i++) {
+					if (snake.body[i].x == apple.x && snake.body[i].y == apple.y) {
+						isInSnake = true;
+						break;
+					}
+				}
+
+				if (isInSnake) {
+					isInSnake = false;
+				} else {
+					return;
+				}
+			}
+		}
+
 		function updateGameLogic(){
 			if (!isPlaying()) {
 				console.log("game over");
@@ -101,8 +123,7 @@ var gameOver = false;
 			};
 
 			if(isAppleEaten()) {
-				apple.x = getRandomInt(0, (canvas.width / snakeWidth) - 1);
-				apple.y = getRandomInt(0, (canvas.height / snakeWidth) - 1);
+				generateNewApple();
 				enlargeSnake(snake, currentDirection);
 			}
 
@@ -117,8 +138,6 @@ var gameOver = false;
 			};
 
 			updateSnakePosition(currentDirection);
-
-
 			setTimeout(updateGameLogic, 45);
 		}
 
